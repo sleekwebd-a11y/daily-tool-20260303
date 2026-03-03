@@ -2,4 +2,4 @@
 
 Useful daily tool
 
-Live: https://ysleekwebd-a11y.github.io/daily-tool-20260303/
+Live: https://sleekwebd-a11y.github.io/daily-tool-20260303/
