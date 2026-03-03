@@ -1,31 +1,147 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>To-Do List</title>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>To-Do List App</title>
+ <style>
+ body {
+ background-color: #f0f0f0;
+ font-family: Arial, sans-serif;
+ }
+
+ .list-container {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: center;
+ }
+
+ .list-item {
+ background-color: #fff;
+ border: 1px solid #ddd;
+ border-radius: 10px;
+ padding: 10px;
+ margin: 10px;
+ }
+
+ .list-item input {
+ width: 100%;
+ padding: 10px;
+ font-size: 16px;
+ }
+
+ .list-item button {
+ background-color: #4CAF50;
+ color: #fff;
+ border: none;
+ border-radius: 5px;
+ padding: 10px 20px;
+ cursor: pointer;
+ }
+
+ .list-item button:hover {
+ background-color: #3e8e41;
+ }
+
+ .list-item span {
+ font-size: 14px;
+ color: #666;
+ }
+
+ .add-item {
+ background-color: #f7f7f7;
+ padding: 10px;
+ border: 1px solid #ddd;
+ border-radius: 10px;
+ margin: 10px;
+ }
+
+ .add-item input {
+ width: 100%;
+ padding: 10px;
+ font-size: 16px;
+ }
+
+ .add-item button {
+ background-color: #4CAF50;
+ color: #fff;
+ border: none;
+ border-radius: 5px;
+ padding: 10px 20px;
+ cursor: pointer;
+ }
+
+ .add-item button:hover {
+ background-color: #3e8e41;
+ }
+
+ </style>
 </head>
 <body>
-    <h1>To-Do List</h1>
-    <input id="task-input" type="text" placeholder="Add task">
-    <button id="add-task-btn">Add</button>
-    <ul id="task-list"></ul>
-    <script>
-        let taskList = document.getElementById("task-list")
-        let taskInput = document.getElementById("task-input")
-        let addTaskBtn = document.getElementById("add-task-btn")
-        let tasks = []
+ <div class="list-container">
+ <div class="list-item">
+ <input type="text" id="new-item" placeholder="New item">
+ <button onclick="addItem()">Add item</button>
+ <span id="new-item-count">0</span>
+ </div>
+ <div class="add-item">
+ <input type="text" id="new-list-item" placeholder="New list item">
+ <button onclick="addItemToList()">Add to list</button>
+ </div>
+ <ul id="list"></ul>
+ </div>
+ <script>
+ let listItems = [];
+ let listCount = 0;
 
-        addTaskBtn.addEventListener("click", function () {
-            let task = taskInput.value
-            if (task) {
-                tasks.push(task)
-                let taskElement = document.createElement("li")
-                taskElement.textContent = task
-                taskElement.addEventListener("click", function () {
-                    taskInput.value = task
-                })
-                taskList.appendChild(taskElement)
-                taskInput.value = ""
-            }
-        })
-    </script>
+ function addItem() {
+ const newItem = document.getElementById("new-item").value.trim();
+ if (newItem) {
+ const listItem = document.createElement("li");
+ listItem.innerHTML = `<input type="text" id="item-${listCount}" placeholder="Item"> <button onclick="removeItem(${listCount})">Remove</button>
+ <span>${listCount + 1}</span>
+`;
+ listItem.querySelector("#item-${listCount}").value = newItem;
+ listItems.push(listItem);
+ document.getElementById("list").appendChild(listItem);
+ document.getElementById("new-item").value = "";
+ listCount++;
+ } 
+}
+
+ function addItemToList() {
+ const newListItem = document.getElementById("new-list-item").value.trim();
+ if (newListItem) {
+ const list = document.getElementById("list");
+ const listItems = list.getElementsByTagName("li");
+ for (let i = 0; i < listItems.length; i++) {
+ if (listItems[i].innerHTML.includes(newListItem)) {
+ listItems[i].innerHTML = `<input type="text" id="item-${i}" placeholder="Item"> <button onclick="removeItemFromList(${i})">Remove</button> <span>${i + 1}</span>
+`;
+ listItems[i].querySelector("#item-${i}").value = newListItem;
+ break;
+ } 
+}
+ document.getElementById("new-list-item").value = "";
+}
+
+ function removeItem(index) {
+ const listItem = document.getElementById(`list-item-${index}");
+ if (listItem) {
+ listItem.remove();
+ listItems = listItems.filter((item, i) => i !== index);
+ document.getElementById("new-item-count").textContent = listItems.length;
+ }
+}
+
+ function removeItemFromList(index) {
+ const listItem = document.getElementById(`list-item-${index}--list`);
+ if (listItem) {
+ listItem.remove();
+ listItems = listItems.filter((item, i) => i !== index);
+ document.getElementById("new-item-count").textContent = listItems.length;
+ }
+}
+</script>
 </body>
 </html>

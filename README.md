@@ -1,5 +1,5 @@
-# To-Do List
+# Daily Tool
 
-A simple to-do list application that allows you to add tasks and view them in a list.
+Useful daily tool
 
 Live: https://sleekwebd-a11y.github.io/daily-tool-20260303/
