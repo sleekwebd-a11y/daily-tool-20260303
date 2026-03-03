@@ -1,47 +1,31 @@
 <html>
-  <head>
-    <title>Random Password Generator</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-      }
-      button {
-        padding: 10px 20px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        background-color: #4CAF50;
-        color: #fff;
-        cursor: pointer;
-      }
-      button:hover {
-        background-color: #3e8e41;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Random Password Generator</h1>
-    <p>Generate a random password of your choice:</p>
-    <input type='number' id='length' value='12' min='8' max='128'>
-    <button id='generate'>Generate</button>
-    <div id='password'></div>
+<head>
+    <title>To-Do List</title>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <input id="task-input" type="text" placeholder="Add task">
+    <button id="add-task-btn">Add</button>
+    <ul id="task-list"></ul>
     <script>
-      const generateButton = document.getElementById('generate');
-      const passwordElement = document.getElementById('password');
-      const lengthInput = document.getElementById('length');
+        let taskList = document.getElementById("task-list")
+        let taskInput = document.getElementById("task-input")
+        let addTaskBtn = document.getElementById("add-task-btn")
+        let tasks = []
 
-      generateButton.addEventListener('click', () => {
-        const length = parseInt(lengthInput.value);
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=}'.split('');
-
-        let password = '';
-        for (let i = 0; i < length; i++) {
-          password += characters[Math.floor(Math.random() * characters.length)];
-        }
-
-        passwordElement.innerText = `Generated Password: ${password}`;
-      });
+        addTaskBtn.addEventListener("click", function () {
+            let task = taskInput.value
+            if (task) {
+                tasks.push(task)
+                let taskElement = document.createElement("li")
+                taskElement.textContent = task
+                taskElement.addEventListener("click", function () {
+                    taskInput.value = task
+                })
+                taskList.appendChild(taskElement)
+                taskInput.value = ""
+            }
+        })
     </script>
-  </body>
+</body>
 </html>
