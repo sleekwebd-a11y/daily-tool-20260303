@@ -1,147 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>To-Do List App</title>
- <style>
- body {
- background-color: #f0f0f0;
- font-family: Arial, sans-serif;
- }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern To-Do List</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
- .list-container {
- display: flex;
- flex-wrap: wrap;
- justify-content: center;
- }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      transition: background 0.3s ease;
+    }
 
- .list-item {
- background-color: #fff;
- border: 1px solid #ddd;
- border-radius: 10px;
- padding: 10px;
- margin: 10px;
- }
+    body.dark {
+      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      color: #ecf0f1;
+    }
 
- .list-item input {
- width: 100%;
- padding: 10px;
- font-size: 16px;
- }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
 
- .list-item button {
- background-color: #4CAF50;
- color: #fff;
- border: none;
- border-radius: 5px;
- padding: 10px 20px;
- cursor: pointer;
- }
+    body.dark .container {
+      background: rgba(52, 73, 94, 0.95);
+    }
 
- .list-item button:hover {
- background-color: #3e8e41;
- }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+    }
 
- .list-item span {
- font-size: 14px;
- color: #666;
- }
+    body.dark h1 {
+      color: #ecf0f1;
+    }
 
- .add-item {
- background-color: #f7f7f7;
- padding: 10px;
- border: 1px solid #ddd;
- border-radius: 10px;
- margin: 10px;
- }
+    .input-section {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
 
- .add-item input {
- width: 100%;
- padding: 10px;
- font-size: 16px;
- }
+    #task-input {
+      flex: 1;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      outline: none;
+      transition: all 0.3s ease;
+    }
 
- .add-item button {
- background-color: #4CAF50;
- color: #fff;
- border: none;
- border-radius: 5px;
- padding: 10px 20px;
- cursor: pointer;
- }
+    #task-input:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
 
- .add-item button:hover {
- background-color: #3e8e41;
- }
+    #add-btn, #clear-btn, .toggle-theme {
+      padding: 15px 25px;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
 
- </style>
+    #add-btn {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+    }
+
+    #add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+    }
+
+    #clear-btn {
+      background: linear-gradient(135deg, #f44336, #da190b);
+      color: white;
+    }
+
+    #clear-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(244, 67, 54, 0.3);
+    }
+
+    #clear-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .toggle-theme {
+      background: linear-gradient(135deg, #ff9800, #f57c00);
+      color: white;
+      padding: 12px 20px;
+    }
+
+    .toggle-theme:hover {
+      transform: translateY(-2px);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px;
+      margin-bottom: 15px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      animation: slideIn 0.3s ease;
+    }
+
+    body.dark li {
+      background: #34495e;
+    }
+
+    li:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    li.completed {
+      opacity: 0.6;
+      text-decoration: line-through;
+    }
+
+    li.completed .task-text {
+      text-decoration: line-through;
+    }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #4CAF50;
+      cursor: pointer;
+    }
+
+    .task-text {
+      flex: 1;
+      font-size: 18px;
+      border: none;
+      background: none;
+      outline: none;
+    }
+
+    .delete-btn {
+      background: linear-gradient(135deg, #f44336, #da190b);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+    }
+
+    .stats {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    body.dark .stats {
+      color: #bdc3c7;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .input-section, .controls {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
- <div class="list-container">
- <div class="list-item">
- <input type="text" id="new-item" placeholder="New item">
- <button onclick="addItem()">Add item</button>
- <span id="new-item-count">0</span>
- </div>
- <div class="add-item">
- <input type="text" id="new-list-item" placeholder="New list item">
- <button onclick="addItemToList()">Add to list</button>
- </div>
- <ul id="list"></ul>
- </div>
- <script>
- let listItems = [];
- let listCount = 0;
+  <div class="container">
+    <h1>🚀 My To-Do List</h1>
+    
+    <div class="input-section">
+      <input type="text" id="task-input" placeholder="What needs to be done today?..." autocomplete="off">
+      <button id="add-btn">Add Task</button>
+    </div>
+    
+    <div class="controls">
+      <button id="clear-btn" disabled>Clear Completed</button>
+      <button class="toggle-theme" onclick="toggleTheme()">🌙 Dark Mode</button>
+    </div>
+    
+    <ul id="task-list"></ul>
+    
+    <div class="stats" id="stats">No tasks yet. Add one above!</div>
+  </div>
 
- function addItem() {
- const newItem = document.getElementById("new-item").value.trim();
- if (newItem) {
- const listItem = document.createElement("li");
- listItem.innerHTML = `<input type="text" id="item-${listCount}" placeholder="Item"> <button onclick="removeItem(${listCount})">Remove</button>
- <span>${listCount + 1}</span>
-`;
- listItem.querySelector("#item-${listCount}").value = newItem;
- listItems.push(listItem);
- document.getElementById("list").appendChild(listItem);
- document.getElementById("new-item").value = "";
- listCount++;
- } 
-}
+  <script>
+    const taskInput = document.getElementById('task-input');
+    const addBtn = document.getElementById('add-btn');
+    const taskList = document.getElementById('task-list');
+    const clearBtn = document.getElementById('clear-btn');
+    const stats = document.getElementById('stats');
 
- function addItemToList() {
- const newListItem = document.getElementById("new-list-item").value.trim();
- if (newListItem) {
- const list = document.getElementById("list");
- const listItems = list.getElementsByTagName("li");
- for (let i = 0; i < listItems.length; i++) {
- if (listItems[i].innerHTML.includes(newListItem)) {
- listItems[i].innerHTML = `<input type="text" id="item-${i}" placeholder="Item"> <button onclick="removeItemFromList(${i})">Remove</button> <span>${i + 1}</span>
-`;
- listItems[i].querySelector("#item-${i}").value = newListItem;
- break;
- } 
-}
- document.getElementById("new-list-item").value = "";
-}
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
- function removeItem(index) {
- const listItem = document.getElementById(`list-item-${index}");
- if (listItem) {
- listItem.remove();
- listItems = listItems.filter((item, i) => i !== index);
- document.getElementById("new-item-count").textContent = listItems.length;
- }
-}
+    // Load tasks on start
+    renderTasks();
 
- function removeItemFromList(index) {
- const listItem = document.getElementById(`list-item-${index}--list`);
- if (listItem) {
- listItem.remove();
- listItems = listItems.filter((item, i) => i !== index);
- document.getElementById("new-item-count").textContent = listItems.length;
- }
-}
-</script>
+    // Add task
+    function addTask(text) {
+      const task = {
+        id: Date.now(),
+        text: text.trim(),
+        completed: false
+      };
+      tasks.unshift(task);
+      saveTasks();
+      renderTasks();
+      taskInput.value = '';
+      taskInput.focus();
+    }
+
+    // Toggle task completion
+    function toggleTask(id) {
+      tasks = tasks.map(task => 
+        task.id === id ? { ...task, completed: !task.completed } : task
+      );
+      saveTasks();
+      renderTasks();
+    }
+
+    // Delete task
+    function deleteTask(id) {
+      tasks = tasks.filter(task => task.id !== id);
+      saveTasks();
+      renderTasks();
+    }
+
+    // Clear completed tasks
+    function clearCompleted() {
+      tasks = tasks.filter(task => !task.completed);
+      saveTasks();
+      renderTasks();
+    }
+
+    // Render all tasks
+    function renderTasks() {
+      taskList.innerHTML = '';
+      
+      if (tasks.length === 0) {
+        stats.textContent = 'No tasks yet. Add one above!';
+        clearBtn.disabled = true;
+        return;
+      }
+
+      const completedCount = tasks.filter(t => t.completed).length;
+      stats.textContent = `${tasks.length} tasks | ${completedCount} completed`;
+
+      tasks.forEach(task => {
+        const li = document.createElement('li');
+        li.className = task.completed ? 'completed' : '';
+        li.innerHTML = `
+          <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
+          <input type="text" class="task-text" value="${task.text}" ${task.completed ? 'readonly' : ''} onfocus="${task.completed ? '' : 'this.readonly=false'}">
+          <button class="delete-btn" onclick="deleteTask(${task.id})">Delete</button>
+        `;
+        taskList.appendChild(li);
+      });
+
+      clearBtn.disabled = completedCount === 0;
+    }
+
+    // Save to localStorage
+    function saveTasks() {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    // Event listeners
+    addBtn.onclick = () => {
+      if (taskInput.value.trim()) {
+        addTask(taskInput.value);
+      }
+    };
+
+    taskInput.onkeypress = (e) => {
+      if (e.key === 'Enter' && taskInput.value.trim()) {
+        addTask(taskInput.value);
+      }
+    };
+
+    clearBtn.onclick = clearCompleted;
+
+    // Theme toggle
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      localStorage.setItem('darkMode', isDark);
+      document.querySelector('.toggle-theme').textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+
+    // Load theme preference
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark');
+      document.querySelector('.toggle-theme').textContent = '☀️ Light Mode';
+    }
+
+    // Auto-focus input
+    taskInput.focus();
+  </script>
 </body>
 </html>
