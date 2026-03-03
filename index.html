@@ -1,1 +1,47 @@
-<h1>Error</h1>
+<html>
+  <head>
+    <title>Random Password Generator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: #fff;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Random Password Generator</h1>
+    <p>Generate a random password of your choice:</p>
+    <input type='number' id='length' value='12' min='8' max='128'>
+    <button id='generate'>Generate</button>
+    <div id='password'></div>
+    <script>
+      const generateButton = document.getElementById('generate');
+      const passwordElement = document.getElementById('password');
+      const lengthInput = document.getElementById('length');
+
+      generateButton.addEventListener('click', () => {
+        const length = parseInt(lengthInput.value);
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=}'.split('');
+
+        let password = '';
+        for (let i = 0; i < length; i++) {
+          password += characters[Math.floor(Math.random() * characters.length)];
+        }
+
+        passwordElement.innerText = `Generated Password: ${password}`;
+      });
+    </script>
+  </body>
+</html>

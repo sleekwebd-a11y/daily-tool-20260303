@@ -1,5 +1,5 @@
-# Daily Tool
+# Random Password Generator
 
-Useful daily tool
+A simple web tool to generate a random password of your choice.
 
 Live: https://sleekwebd-a11y.github.io/daily-tool-20260303/
